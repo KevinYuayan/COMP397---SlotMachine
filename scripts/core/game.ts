@@ -11,8 +11,15 @@
     
     // Game objects
 
+
+    // Path Variables
+    let imagePath:string = "./assets/images/"
     let assetManifest = [
-        {id: "startButton", src: "/Assets/images/startButton.png"},        
+        {id: "slotMachine", src: imagePath + "slotMachine1.jpg"},
+        {id: "quitButton", src: imagePath + "button_quit.png"},
+        {id: "resetButton", src: imagePath + "button_reset.png"},
+        {id: "spinButton", src: imagePath + "button_spin.png"},
+        
     ]
 
 
@@ -33,8 +40,8 @@
         createjs.Ticker.framerate = 60; // game will run at 60fps
         createjs.Ticker.on("tick", Update);
 
-        currentState = config.Scene.START;
-        managers.Game.currentState = config.Scene.START;
+        currentState = config.Scene.PLAY;
+        managers.Game.currentState = config.Scene.PLAY;
         Main();
     }
 

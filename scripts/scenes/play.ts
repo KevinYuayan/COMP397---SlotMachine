@@ -1,7 +1,7 @@
 module scenes{
     export class Play extends objects.Scene{
         // Private instance variables
-        // private _slotMachine:objects.SlotMachine;
+        private _slotMachine:objects.SlotMachine;
         // public variables
 
         // constructor
@@ -13,18 +13,16 @@ module scenes{
         // public methods
         
         public Main(): void {
-            throw new Error("Method not implemented.");
-        }        public Start(): void {
-            throw new Error("Method not implemented.");
+            this._slotMachine = new objects.SlotMachine("slotMachine");
+        }
+        public Start(): void {
         }
         public Update(): void {
-            throw new Error("Method not implemented.");
+            this._slotMachine.Update();
         }
         public Reset(): void {
-            throw new Error("Method not implemented.");
         }
         public Destroy(): void {
-            throw new Error("Method not implemented.");
         }
 
 

@@ -9,7 +9,7 @@
     var currentState;
     // Game objects
     var assetManifest = [
-        { id: "startButton", src: "/Assets/images/startButton.png" },
+    //{id: "slotMachine", src: "/Assets/images/slotMachine.png"},        
     ];
     function Init() {
         assetManager = new createjs.LoadQueue();
@@ -26,8 +26,8 @@
         stage.enableMouseOver(20);
         createjs.Ticker.framerate = 60; // game will run at 60fps
         createjs.Ticker.on("tick", Update);
-        currentState = config.Scene.START;
-        managers.Game.currentState = config.Scene.START;
+        currentState = config.Scene.PLAY;
+        managers.Game.currentState = config.Scene.PLAY;
         Main();
     }
     // this is the main game loop

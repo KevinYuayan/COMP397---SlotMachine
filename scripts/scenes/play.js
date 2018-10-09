@@ -15,8 +15,6 @@ var scenes;
 (function (scenes) {
     var Play = /** @class */ (function (_super) {
         __extends(Play, _super);
-        // Private instance variables
-        // private _slotMachine:objects.SlotMachine;
         // public variables
         // constructor
         function Play() {
@@ -25,19 +23,16 @@ var scenes;
         // private methods
         // public methods
         Play.prototype.Main = function () {
-            throw new Error("Method not implemented.");
+            this._slotMachine = new objects.SlotMachine("slotMachine");
         };
         Play.prototype.Start = function () {
-            throw new Error("Method not implemented.");
         };
         Play.prototype.Update = function () {
-            throw new Error("Method not implemented.");
+            this._slotMachine.Update();
         };
         Play.prototype.Reset = function () {
-            throw new Error("Method not implemented.");
         };
         Play.prototype.Destroy = function () {
-            throw new Error("Method not implemented.");
         };
         return Play;
     }(objects.Scene));
