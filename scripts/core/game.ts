@@ -19,6 +19,14 @@
         {id: "quitButton", src: imagePath + "button_quit.png"},
         {id: "resetButton", src: imagePath + "button_reset.png"},
         {id: "spinButton", src: imagePath + "button_spin.png"},
+        {id: "apple", src: imagePath + "apple.png"},
+        {id: "banana", src: imagePath + "banana.png"},
+        {id: "bar", src: imagePath + "bar.png"},
+        {id: "cherry", src: imagePath + "cherry.png"},
+        {id: "grapes", src: imagePath + "grapes.png"},
+        {id: "lemon", src: imagePath + "lemon.png"},
+        {id: "orange", src: imagePath + "orange.png"},
+        {id: "watermelon", src: imagePath + "watermelon.png"},
         
     ]
 
@@ -34,6 +42,9 @@
     function Start():void {
         console.log(`%c Game Started...`,"color: blue; font-size: 20px;");
         canvas = document.getElementsByTagName("canvas")[0];
+        managers.Game.playerBet = document.getElementsByTagName("input")[0];
+        // hides input until user goes to the play screen
+        managers.Game.playerBet.style.display = "none";
         stage = new createjs.Stage(canvas);
         managers.Game.stage = stage;
         stage.enableMouseOver(20);

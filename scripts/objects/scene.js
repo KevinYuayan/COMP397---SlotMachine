@@ -21,6 +21,10 @@ var objects;
         function Scene() {
             return _super.call(this) || this;
         }
+        Scene.prototype.Destroy = function () {
+            this.removeAllEventListeners;
+            this.removeAllChildren;
+        };
         return Scene;
     }(createjs.Container));
     objects.Scene = Scene;

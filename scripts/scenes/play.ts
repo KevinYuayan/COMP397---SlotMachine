@@ -1,19 +1,22 @@
 module scenes {
     export class Play extends objects.Scene {
         // Private instance variables
-        private _slotMachine: objects.SlotMachine;
+        private _playBackground: objects.Background;
         // labels
         private _lblmoney: objects.Label;
+        private _lblbet: objects.Label;
+        private _lbljackpot: objects.Label;
+
         // buttons
         private _btnReset: objects.Button;
         private _btnSpin: objects.Button;
         private _btnQuit: objects.Button;
         // numbers
         private _playerMoney: number;
+        private _playerBet: number;
         private _winnings: number;
         private _jackpot: number;
         private _turn: number;
-        private _playerBet: number;
         private _winNumber: number;
         private _lossNumber: number;
         private _spinResult: string[];
@@ -27,6 +30,8 @@ module scenes {
         private _sevens: number;
         private _blanks: number;
 
+        // Player's input
+        private _playerBetString: string;
         private _fruits: string = "";
 
         // public variables
@@ -45,30 +50,34 @@ module scenes {
 
         /* When the player clicks the spin button the game kicks off */
         private Spin(event: createjs.MouseEvent): void {
-            this._playerBet = $("div#betEntry>input").val();
-
-            if (this._playerMoney == 0) {
-                if (confirm("You ran out of Money! \nDo you want to play again?")) {
-                    this.Reset();
+            this._playerBetString = managers.Game.playerBet.value;
+            if (!isNaN(Number(this._playerBetString))) {
+                this._playerBet = parseInt(this._playerBetString);
+                if (this._playerMoney == 0) {
+                    if (confirm("You ran out of Money! \nDo you want to play again?")) {
+                        this.Reset();
+                    }
+                }
+                else if (this._playerBet > this._playerMoney) {
+                    alert("You don't have enough Money to place that bet.");
+                }
+                else if (this._playerBet < 0) {
+                    alert("All bets must be a positive $ amount.");
+                }
+                else if (this._playerBet <= this._playerMoney) {
+                    this._spinResult = this.Reels();
+                    this._fruits = this._spinResult[0] + " - " + this._spinResult[1] + " - " + this._spinResult[2];
+                    //$("div#result>p").text(this._fruits);
+                    this.determineWinnings();
+                    this._turn++;
+                }
+                else {
+                    alert("Please enter a valid bet amount");
                 }
             }
-            else if (this._playerBet > this._playerMoney) {
-                alert("You don't have enough Money to place that bet.");
-            }
-            else if (this._playerBet < 0) {
-                alert("All bets must be a positive $ amount.");
-            }
-            else if (this._playerBet <= this._playerMoney) {
-                this._spinResult = this.Reels();
-                this._fruits = this._spinResult[0] + " - " + this._spinResult[1] + " - " + this._spinResult[2];
-                //$("div#result>p").text(this._fruits);
-                this.determineWinnings();
-                this._turn++;
-            }
             else {
-                alert("Please enter a valid bet amount");
+                alert(this._playerBetString + " is not an Integer");
             }
-
         }
 
         // Spins each reel to get the spin result
@@ -231,7 +240,9 @@ module scenes {
 
         //instatniates the objects
         public Main(): void {
-            this._slotMachine = new objects.SlotMachine("slotMachine");
+            managers.Game.playerBet.style.display = "inline";
+
+            this._playBackground = new objects.Background("slotMachine");
 
             this._btnQuit = new objects.Button("quitButton");
             this._btnReset = new objects.Button("resetButton");
@@ -240,13 +251,15 @@ module scenes {
             this._btnQuit.on("click", this.Quit);
             this._btnReset.on("click", this.Reset);
             this._btnSpin.on("click", this.Spin);
+
+            this.Reset();
         }
         // places the objects in the scene
         public Start(): void {
 
         }
         public Update(): void {
-            this._slotMachine.Update();
+            this._playBackground.Update();
         }
         public Reset(): void {
             this.resetFruitTally();
@@ -262,7 +275,5 @@ module scenes {
         public Destroy(): void {
             super.Destroy();
         }
-
-
     }
 }
