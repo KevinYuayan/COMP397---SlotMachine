@@ -48,8 +48,6 @@ module scenes{
             this.Main();
         }
         public Update(): void {
-
-            this._background.Update();
         }
         public Reset(): void {
             throw new Error("Method not implemented.");

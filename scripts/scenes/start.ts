@@ -3,8 +3,7 @@ module scenes{
         // private instance variables
         
         private _background:objects.Background;
-        private _welcomeLabel:objects.Label;
-        private _startButton:objects.Button;
+        private _playButton:objects.Button;
 
         // public properties
 
@@ -23,27 +22,23 @@ module scenes{
 
         public Main(): void {
             
-            // adds ocean to the stage
+            // adds background to the stage
             this.addChild(this._background);
 
-            // adds ocean to the stage
-            this.addChild(this._startButton);
-
-            // adds player to the stage
-            this.addChild(this._welcomeLabel);
+            // adds play button to the stage
+            this.addChild(this._playButton);
 
             // event listeners
 
             // starts the play scene
-            this._startButton.on("click", ()=>{
+            this._playButton.on("click", ()=>{
                 managers.Game.currentState = config.Scene.PLAY;
             })
         }        
         public Start(): void {
             // Instantiates objects
-            this._startButton = new objects.Button("startButton", 320, 360, true);
+            this._playButton = new objects.Button("playButton", 320, 420, true);
             this._background = new objects.Background("startBackground");
-            this._welcomeLabel = new objects.Label("Slot Machine", "60px", "Consolas", "#FFFF00", 320, 240, true);
 
             this.Main();
         }
@@ -56,7 +51,5 @@ module scenes{
         public Destroy(): void {
             super.Destroy();
         }
-
-
     }
 }

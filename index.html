@@ -10,45 +10,6 @@
 
 <body>
     <canvas id="canvas" width="640" height="480"></canvas>
-    <input id="playerBet" type="text"/>
-    <!-- <div>
-        <h1>Slot Machine</h1>
-        <div>
-            <h2>Player Statistics</h2>
-            <hr />
-            <ul id="playerStats">
-                <li id="jackpot">Jackpot: 500</li>
-                <li id="playerMoney">Player Money: 1000</li>
-                <li id="playerTurn">Turn: 0</li>
-                <li id="playerWins">Wins: 0</li>
-                <li id="playerLosses">Losses: 0</li>
-                <li id="playerWinRatio">Win Ratio: 0%</li>
-            </ul>
-            <hr />
-        </div>
-
-        <div id="betEntry">
-
-            <p>Place Your Bet Here</p>
-            <input id="playerBet" name="points" value="10">
-            <hr />
-        </div>
-
-
-        <button id="spinButton">Spin!</button>
-    </div>
-
-    <div id="result">
-        <h2>Spin Result</h2>
-        <hr />
-        <p></p>
-    </div>
-    <hr />
-    <div id="winOrLose">
-        <p></p>
-    </div> -->
-
-
     <!-- JavaScript Section -->
 
     <!-- Createjs Libraries -->
@@ -57,15 +18,22 @@
     <script src="./node_modules/soundjs/lib/soundjs.min.js"></script>
     <script src="./node_modules/preloadjs/lib/preloadjs.min.js"></script>
 
+    
+    <!-- Config -->
+    
+    <script src="./scripts/config/scene.js"></script>
+    <script src="./scripts/config/constants.js"></script>
+
     <!-- Managers -->
     <script src="./scripts/managers/game.js"></script>
 
     <!-- Game Objects -->
-    <script src="./scripts/objects/gameObject.js"></script>
+    <script src="./scripts/objects/gameObject.js"></script>    
+    <script src="./scripts/objects/scene.js"></script>
     <script src="./scripts/objects/background.js"></script>
+    <script src="./scripts/objects/reel.js"></script>
     <script src="./scripts/objects/label.js"></script>
     <script src="./scripts/objects/button.js"></script>
-    <script src="./sripts/objects/scene.js"></script>
 
     <!-- Scenes -->
     <script src="./scripts/scenes/play.js"></script>

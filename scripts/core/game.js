@@ -11,18 +11,20 @@
     // Path Variables
     var imagePath = "./assets/images/";
     var assetManifest = [
-        { id: "slotMachine", src: imagePath + "slotMachine1.jpg" },
+        { id: "slotMachine", src: imagePath + "slotMachine.png" },
+        { id: "startBackground", src: imagePath + "startBackground.jpg" },
+        { id: "playBackground", src: imagePath + "playBackground.jpg" },
         { id: "quitButton", src: imagePath + "button_quit.png" },
         { id: "resetButton", src: imagePath + "button_reset.png" },
         { id: "spinButton", src: imagePath + "button_spin.png" },
-        { id: "apple", src: imagePath + "apple.png" },
+        { id: "playButton", src: imagePath + "button_play.png" },
         { id: "banana", src: imagePath + "banana.png" },
         { id: "bar", src: imagePath + "bar.png" },
         { id: "cherry", src: imagePath + "cherry.png" },
         { id: "grapes", src: imagePath + "grapes.png" },
         { id: "lemon", src: imagePath + "lemon.png" },
         { id: "orange", src: imagePath + "orange.png" },
-        { id: "watermelon", src: imagePath + "watermelon.png" },
+        { id: "blank", src: imagePath + "blank.png" }
     ];
     function Init() {
         assetManager = new createjs.LoadQueue();
@@ -34,16 +36,13 @@
     function Start() {
         console.log("%c Game Started...", "color: blue; font-size: 20px;");
         canvas = document.getElementsByTagName("canvas")[0];
-        managers.Game.playerBet = document.getElementsByTagName("input")[0];
-        // hides input until user goes to the play screen
-        managers.Game.playerBet.style.display = "none";
         stage = new createjs.Stage(canvas);
         managers.Game.stage = stage;
         stage.enableMouseOver(20);
         createjs.Ticker.framerate = 60; // game will run at 60fps
         createjs.Ticker.on("tick", Update);
-        currentState = config.Scene.PLAY;
-        managers.Game.currentState = config.Scene.PLAY;
+        currentState = config.Scene.START;
+        managers.Game.currentState = config.Scene.START;
         Main();
     }
     // this is the main game loop
@@ -62,13 +61,13 @@
         }
         switch (currentState) {
             case config.Scene.START:
-                //currentScene = new scenes.Start;
+                currentScene = new scenes.Start;
                 break;
             case config.Scene.PLAY:
                 currentScene = new scenes.Play;
                 break;
             case config.Scene.OVER:
-                //currentScene = new scenes.Over;
+                currentScene = new scenes.Over;
                 break;
         }
         stage.addChild(currentScene);

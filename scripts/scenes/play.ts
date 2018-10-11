@@ -2,6 +2,7 @@ module scenes {
     export class Play extends objects.Scene {
         // Private instance variables
         private _playBackground: objects.Background;
+        private _slotMachine: objects.Background;
         // labels
         private _lblmoney: objects.Label;
         private _lblbet: objects.Label;
@@ -26,20 +27,20 @@ module scenes {
         private _oranges: number;
         private _cherries: number;
         private _bars: number;
-        private _bells: number;
+        private _lemons: number;
         private _sevens: number;
         private _blanks: number;
+        // x value for the reel images
+        private _reelObjXLocation: number[];
 
-        // Player's input
-        private _playerBetString: string;
-        private _fruits: string = "";
+        private _reels:objects.Reel[];
 
         // public variables
 
         // constructor
         constructor() {
             super();
-            this.Main();
+            this.Start();
         }
         // private methods
 
@@ -50,9 +51,6 @@ module scenes {
 
         /* When the player clicks the spin button the game kicks off */
         private Spin(event: createjs.MouseEvent): void {
-            this._playerBetString = managers.Game.playerBet.value;
-            if (!isNaN(Number(this._playerBetString))) {
-                this._playerBet = parseInt(this._playerBetString);
                 if (this._playerMoney == 0) {
                     if (confirm("You ran out of Money! \nDo you want to play again?")) {
                         this.Reset();
@@ -66,18 +64,25 @@ module scenes {
                 }
                 else if (this._playerBet <= this._playerMoney) {
                     this._spinResult = this.Reels();
-                    this._fruits = this._spinResult[0] + " - " + this._spinResult[1] + " - " + this._spinResult[2];
-                    //$("div#result>p").text(this._fruits);
-                    this.determineWinnings();
+                    // method to display results on reel
+                    this.DisplayResults();
+                    this.DetermineWinnings();
                     this._turn++;
                 }
                 else {
                     alert("Please enter a valid bet amount");
                 }
-            }
-            else {
-                alert(this._playerBetString + " is not an Integer");
-            }
+            
+        }
+
+        // Displays results on the reels
+        private DisplayResults():void {
+            for (let index = 0; index < this._spinResult.length; index++) {
+                let result:string = this._spinResult[index];
+                this._reels[index] = new objects.Reel(result);
+                this._reels[index].x = this._reelObjXLocation[index];          
+                this.stage.addChild(this._reels[index]);
+            }            
         }
 
         // Spins each reel to get the spin result
@@ -114,8 +119,8 @@ module scenes {
                             this._bars++;
                             break;
                         case this.checkRange(outCome[spin], 63, 64): //  3.1% probability
-                            betLine[spin] = "Bell";
-                            this._bells++;
+                            betLine[spin] = "Lemon";
+                            this._lemons++;
                             break;
                         case this.checkRange(outCome[spin], 65, 65): //  1.5% probability
                             betLine[spin] = "Seven";
@@ -128,7 +133,7 @@ module scenes {
         }
 
         /* This function calculates the player's winnings, if any */
-        private determineWinnings() {
+        private DetermineWinnings() {
             if (this._blanks == 0) {
                 if (this._grapes == 3) {
                     this._winnings = this._playerBet * 10;
@@ -145,7 +150,7 @@ module scenes {
                 else if (this._bars == 3) {
                     this._winnings = this._playerBet * 50;
                 }
-                else if (this._bells == 3) {
+                else if (this._lemons == 3) {
                     this._winnings = this._playerBet * 75;
                 }
                 else if (this._sevens == 3) {
@@ -166,7 +171,7 @@ module scenes {
                 else if (this._bars == 2) {
                     this._winnings = this._playerBet * 5;
                 }
-                else if (this._bells == 2) {
+                else if (this._lemons == 2) {
                     this._winnings = this._playerBet * 10;
                 }
                 else if (this._sevens == 2) {
@@ -207,7 +212,7 @@ module scenes {
             this._oranges = 0;
             this._cherries = 0;
             this._bars = 0;
-            this._bells = 0;
+            this._lemons = 0;
             this._sevens = 0;
             this._blanks = 0;
         }
@@ -238,28 +243,53 @@ module scenes {
         }
         // public methods
 
-        //instatniates the objects
+        // places the objects in the scene
         public Main(): void {
-            managers.Game.playerBet.style.display = "inline";
+            this.addChild(this._playBackground);
+            this.addChild(this._slotMachine);
 
-            this._playBackground = new objects.Background("slotMachine");
+            this.addChild(this._lblbet);
+            this.addChild(this._lbljackpot);            
+            this.addChild(this._lblmoney);
+
+            this.addChild(this._btnQuit);
+            this.addChild(this._btnReset);
+            this.addChild(this._btnSpin);
+
+
+            
+        }
+        // instatniates the objects
+        public Start(): void {
+            this._playBackground = new objects.Background("playBackground");
+            this._slotMachine = new objects.Background("slotMachine");
+
+            this._lblbet = new objects.Label("Bet:" + this._playerBet, "15","Consolas", "#FFFFFF", 320, 240, true)
+            this._lbljackpot = new objects.Label("Jackpot:" + this._jackpot, "15","Consolas", "#FFFFFF", 300, 240, true)
+            this._lblmoney = new objects.Label("Money:" + this._playerMoney, "15","Consolas", "#FFFFFF", 340, 240, true)
 
             this._btnQuit = new objects.Button("quitButton");
             this._btnReset = new objects.Button("resetButton");
             this._btnSpin = new objects.Button("spinButton");
+
+            // individual reels are created after a spin
+            this._reels = new Array<objects.Reel>();
+
+            // instantiates the x coordinates for the reels
+            this._reelObjXLocation = new Array<number>();
+            this._reelObjXLocation[0] = 100;
+            this._reelObjXLocation[1] = 200;
+            this._reelObjXLocation[2] = 300;
+
 
             this._btnQuit.on("click", this.Quit);
             this._btnReset.on("click", this.Reset);
             this._btnSpin.on("click", this.Spin);
 
             this.Reset();
-        }
-        // places the objects in the scene
-        public Start(): void {
-
+            this.Main();
         }
         public Update(): void {
-            this._playBackground.Update();
         }
         public Reset(): void {
             this.resetFruitTally();

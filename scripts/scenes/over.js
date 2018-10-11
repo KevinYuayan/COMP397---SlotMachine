@@ -45,7 +45,6 @@ var scenes;
             this.Main();
         };
         Over.prototype.Update = function () {
-            this._background.Update();
         };
         Over.prototype.Reset = function () {
             throw new Error("Method not implemented.");

@@ -19,8 +19,7 @@ var scenes;
         // constructor
         function Play() {
             var _this = _super.call(this) || this;
-            _this._fruits = "";
-            _this.Main();
+            _this.Start();
             return _this;
         }
         // private methods
@@ -30,33 +29,35 @@ var scenes;
         };
         /* When the player clicks the spin button the game kicks off */
         Play.prototype.Spin = function (event) {
-            this._playerBetString = managers.Game.playerBet.value;
-            if (!isNaN(Number(this._playerBetString))) {
-                this._playerBet = parseInt(this._playerBetString);
-                if (this._playerMoney == 0) {
-                    if (confirm("You ran out of Money! \nDo you want to play again?")) {
-                        this.Reset();
-                    }
-                }
-                else if (this._playerBet > this._playerMoney) {
-                    alert("You don't have enough Money to place that bet.");
-                }
-                else if (this._playerBet < 0) {
-                    alert("All bets must be a positive $ amount.");
-                }
-                else if (this._playerBet <= this._playerMoney) {
-                    this._spinResult = this.Reels();
-                    this._fruits = this._spinResult[0] + " - " + this._spinResult[1] + " - " + this._spinResult[2];
-                    //$("div#result>p").text(this._fruits);
-                    this.determineWinnings();
-                    this._turn++;
-                }
-                else {
-                    alert("Please enter a valid bet amount");
+            if (this._playerMoney == 0) {
+                if (confirm("You ran out of Money! \nDo you want to play again?")) {
+                    this.Reset();
                 }
             }
+            else if (this._playerBet > this._playerMoney) {
+                alert("You don't have enough Money to place that bet.");
+            }
+            else if (this._playerBet < 0) {
+                alert("All bets must be a positive $ amount.");
+            }
+            else if (this._playerBet <= this._playerMoney) {
+                this._spinResult = this.Reels();
+                // method to display results on reel
+                this.DisplayResults();
+                this.DetermineWinnings();
+                this._turn++;
+            }
             else {
-                alert(this._playerBetString + " is not an Integer");
+                alert("Please enter a valid bet amount");
+            }
+        };
+        // Displays results on the reels
+        Play.prototype.DisplayResults = function () {
+            for (var index = 0; index < this._spinResult.length; index++) {
+                var result = this._spinResult[index];
+                this._reels[index] = new objects.Reel(result);
+                this._reels[index].x = this._reelObjXLocation[index];
+                this.stage.addChild(this._reels[index]);
             }
         };
         // Spins each reel to get the spin result
@@ -92,8 +93,8 @@ var scenes;
                             this._bars++;
                             break;
                         case this.checkRange(outCome[spin], 63, 64): //  3.1% probability
-                            betLine[spin] = "Bell";
-                            this._bells++;
+                            betLine[spin] = "Lemon";
+                            this._lemons++;
                             break;
                         case this.checkRange(outCome[spin], 65, 65): //  1.5% probability
                             betLine[spin] = "Seven";
@@ -105,7 +106,7 @@ var scenes;
             }
         };
         /* This function calculates the player's winnings, if any */
-        Play.prototype.determineWinnings = function () {
+        Play.prototype.DetermineWinnings = function () {
             if (this._blanks == 0) {
                 if (this._grapes == 3) {
                     this._winnings = this._playerBet * 10;
@@ -122,7 +123,7 @@ var scenes;
                 else if (this._bars == 3) {
                     this._winnings = this._playerBet * 50;
                 }
-                else if (this._bells == 3) {
+                else if (this._lemons == 3) {
                     this._winnings = this._playerBet * 75;
                 }
                 else if (this._sevens == 3) {
@@ -143,7 +144,7 @@ var scenes;
                 else if (this._bars == 2) {
                     this._winnings = this._playerBet * 5;
                 }
-                else if (this._bells == 2) {
+                else if (this._lemons == 2) {
                     this._winnings = this._playerBet * 10;
                 }
                 else if (this._sevens == 2) {
@@ -181,7 +182,7 @@ var scenes;
             this._oranges = 0;
             this._cherries = 0;
             this._bars = 0;
-            this._bells = 0;
+            this._lemons = 0;
             this._sevens = 0;
             this._blanks = 0;
         };
@@ -208,23 +209,41 @@ var scenes;
             }
         };
         // public methods
-        //instatniates the objects
+        // places the objects in the scene
         Play.prototype.Main = function () {
-            managers.Game.playerBet.style.display = "inline";
-            this._playBackground = new objects.Background("slotMachine");
+            this.addChild(this._playBackground);
+            this.addChild(this._slotMachine);
+            this.addChild(this._lblbet);
+            this.addChild(this._lbljackpot);
+            this.addChild(this._lblmoney);
+            this.addChild(this._btnQuit);
+            this.addChild(this._btnReset);
+            this.addChild(this._btnSpin);
+        };
+        // instatniates the objects
+        Play.prototype.Start = function () {
+            this._playBackground = new objects.Background("playBackground");
+            this._slotMachine = new objects.Background("slotMachine");
+            this._lblbet = new objects.Label("Bet:" + this._playerBet, "15", "Consolas", "#FFFFFF", 320, 240, true);
+            this._lbljackpot = new objects.Label("Jackpot:" + this._jackpot, "15", "Consolas", "#FFFFFF", 300, 240, true);
+            this._lblmoney = new objects.Label("Money:" + this._playerMoney, "15", "Consolas", "#FFFFFF", 340, 240, true);
             this._btnQuit = new objects.Button("quitButton");
             this._btnReset = new objects.Button("resetButton");
             this._btnSpin = new objects.Button("spinButton");
+            // individual reels are created after a spin
+            this._reels = new Array();
+            // instantiates the x coordinates for the reels
+            this._reelObjXLocation = new Array();
+            this._reelObjXLocation[0] = 100;
+            this._reelObjXLocation[1] = 200;
+            this._reelObjXLocation[2] = 300;
             this._btnQuit.on("click", this.Quit);
             this._btnReset.on("click", this.Reset);
             this._btnSpin.on("click", this.Spin);
             this.Reset();
-        };
-        // places the objects in the scene
-        Play.prototype.Start = function () {
+            this.Main();
         };
         Play.prototype.Update = function () {
-            this._playBackground.Update();
         };
         Play.prototype.Reset = function () {
             this.resetFruitTally();
