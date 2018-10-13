@@ -15,7 +15,7 @@ module objects {
 
         // public methods
         public Start(): void {
-            this.y = 200;
+            this.y = 180;
         }        
         public Update(): void {
         }

@@ -23,34 +23,6 @@ var scenes;
             return _this;
         }
         // private methods
-        Play.prototype.Quit = function (event) {
-            managers.Game.currentState = config.Scene.OVER;
-            this.Destroy();
-        };
-        /* When the player clicks the spin button the game kicks off */
-        Play.prototype.Spin = function (event) {
-            if (this._playerMoney == 0) {
-                if (confirm("You ran out of Money! \nDo you want to play again?")) {
-                    this.Reset();
-                }
-            }
-            else if (this._playerBet > this._playerMoney) {
-                alert("You don't have enough Money to place that bet.");
-            }
-            else if (this._playerBet < 0) {
-                alert("All bets must be a positive $ amount.");
-            }
-            else if (this._playerBet <= this._playerMoney) {
-                this._spinResult = this.Reels();
-                // method to display results on reel
-                this.DisplayResults();
-                this.DetermineWinnings();
-                this._turn++;
-            }
-            else {
-                alert("Please enter a valid bet amount");
-            }
-        };
         // Displays results on the reels
         Play.prototype.DisplayResults = function () {
             for (var index = 0; index < this._spinResult.length; index++) {
@@ -73,31 +45,31 @@ var scenes;
                             this._blanks++;
                             break;
                         case this.checkRange(outCome[spin], 28, 37): // 15.4% probability
-                            betLine[spin] = "Grapes";
+                            betLine[spin] = "grapes";
                             this._grapes++;
                             break;
                         case this.checkRange(outCome[spin], 38, 46): // 13.8% probability
-                            betLine[spin] = "Banana";
+                            betLine[spin] = "banana";
                             this._bananas++;
                             break;
                         case this.checkRange(outCome[spin], 47, 54): // 12.3% probability
-                            betLine[spin] = "Orange";
+                            betLine[spin] = "orange";
                             this._oranges++;
                             break;
                         case this.checkRange(outCome[spin], 55, 59): //  7.7% probability
-                            betLine[spin] = "Cherry";
+                            betLine[spin] = "cherry";
                             this._cherries++;
                             break;
                         case this.checkRange(outCome[spin], 60, 62): //  4.6% probability
-                            betLine[spin] = "Bar";
+                            betLine[spin] = "bar";
                             this._bars++;
                             break;
                         case this.checkRange(outCome[spin], 63, 64): //  3.1% probability
-                            betLine[spin] = "Lemon";
+                            betLine[spin] = "lemon";
                             this._lemons++;
                             break;
                         case this.checkRange(outCome[spin], 65, 65): //  1.5% probability
-                            betLine[spin] = "Seven";
+                            betLine[spin] = "seven";
                             this._sevens++;
                             break;
                     }
@@ -175,29 +147,18 @@ var scenes;
                 this._jackpot = 1000;
             }
         };
-        /* Utility function to reset the player stats */
-        Play.prototype.resetFruitTally = function () {
-            this._grapes = 0;
-            this._bananas = 0;
-            this._oranges = 0;
-            this._cherries = 0;
-            this._bars = 0;
-            this._lemons = 0;
-            this._sevens = 0;
-            this._blanks = 0;
-        };
         /* Utility function to show a win message and increase player money */
         Play.prototype.showWinMessage = function () {
             this._playerMoney += this._winnings;
             //$("div#winOrLose>p").text("You Won: $" + winnings);
-            this.resetFruitTally();
+            this.ResetFruitTally();
             this.checkJackPot();
         };
         /* Utility function to show a loss message and reduce player money */
         Play.prototype.showLossMessage = function () {
             this._playerMoney -= this._playerBet;
             //$("div#winOrLose>p").text("You Lost!");
-            this.resetFruitTally();
+            this.ResetFruitTally();
         };
         /* Utility function to check if a value falls within a range of bounds */
         Play.prototype.checkRange = function (value, lowerBounds, upperBounds) {
@@ -208,7 +169,59 @@ var scenes;
                 return !value;
             }
         };
+        // sets the x and y position for each object
+        Play.prototype.setXY = function () {
+            this._slotMachine.x = 150;
+        };
+        // event handlers
+        Play.prototype.ResetEvent = function (event) {
+            this.Reset();
+        };
+        Play.prototype.Quit = function (event) {
+            managers.Game.currentState = config.Scene.OVER;
+            this.Destroy();
+        };
+        /* When the player clicks the spin button the game kicks off */
+        Play.prototype.Spin = function (event) {
+            this._spinResult = this.Reels();
+            // method to display results on reel
+            this.DisplayResults();
+            this.DetermineWinnings();
+            this._turn++;
+        };
+        //Update Methods
+        // checks and updates the bet amount. Hides spin button if invalid bet
+        Play.prototype.checkInput = function () {
+            if (!isNaN(parseInt(managers.Game.playerBet.value))) {
+                this._playerBet = parseInt(managers.Game.playerBet.value);
+                if (this._playerBet <= this._playerMoney && this._playerBet > 0) {
+                    if (!this._btnSpin.IsEnabled) {
+                        this._btnSpin.IsEnabled = true;
+                        this._btnSpin.addEventListener("click", this.Spin);
+                    }
+                }
+                else {
+                    this._btnSpin.IsEnabled = false;
+                    this._btnSpin.off("click", this.Spin);
+                }
+            }
+            else {
+                this._btnSpin.IsEnabled = false;
+                this._btnSpin.off("click", this.Spin);
+            }
+        };
         // public methods
+        /* Utility function to reset the player stats */
+        Play.prototype.ResetFruitTally = function () {
+            this._grapes = 0;
+            this._bananas = 0;
+            this._oranges = 0;
+            this._cherries = 0;
+            this._bars = 0;
+            this._lemons = 0;
+            this._sevens = 0;
+            this._blanks = 0;
+        };
         // places the objects in the scene
         Play.prototype.Main = function () {
             this.addChild(this._playBackground);
@@ -222,31 +235,39 @@ var scenes;
         };
         // instatniates the objects
         Play.prototype.Start = function () {
+            managers.Game.playerBet.style.display = "inline";
+            this.Reset();
             this._playBackground = new objects.Background("playBackground");
             this._slotMachine = new objects.Background("slotMachine");
-            this._lblbet = new objects.Label("Bet:" + this._playerBet, "15", "Consolas", "#FFFFFF", 320, 240, true);
-            this._lbljackpot = new objects.Label("Jackpot:" + this._jackpot, "15", "Consolas", "#FFFFFF", 300, 240, true);
-            this._lblmoney = new objects.Label("Money:" + this._playerMoney, "15", "Consolas", "#FFFFFF", 340, 240, true);
-            this._btnQuit = new objects.Button("quitButton");
-            this._btnReset = new objects.Button("resetButton");
-            this._btnSpin = new objects.Button("spinButton");
+            this._lblbet = new objects.Label("Bet:", "30px", "Consolas", "#000000", 200, 340, false);
+            this._lbljackpot = new objects.Label("Jackpot:" + this._jackpot, "30px", "Consolas", "#000000", 200, 55, false);
+            this._lblmoney = new objects.Label("Money:" + this._playerMoney, "30px", "Consolas", "#000000", 200, 290, false);
+            this._btnQuit = new objects.Button("quitButton", 530, 30, true);
+            this._btnReset = new objects.Button("resetButton", 530, 80, true);
+            this._btnSpin = new objects.Button("spinButton", 530, 300, true);
             // individual reels are created after a spin
             this._reels = new Array();
             // instantiates the x coordinates for the reels
             this._reelObjXLocation = new Array();
-            this._reelObjXLocation[0] = 100;
-            this._reelObjXLocation[1] = 200;
-            this._reelObjXLocation[2] = 300;
-            this._btnQuit.on("click", this.Quit);
-            this._btnReset.on("click", this.Reset);
-            this._btnSpin.on("click", this.Spin);
-            this.Reset();
+            this._reelObjXLocation[0] = 210;
+            this._reelObjXLocation[1] = 286;
+            this._reelObjXLocation[2] = 362;
+            this.setXY();
+            // event handlers
+            this.Quit = this.Quit.bind(this);
+            this.ResetEvent = this.ResetEvent.bind(this);
+            this.Spin = this.Spin.bind(this);
+            this._btnQuit.addEventListener("click", this.Quit);
+            this._btnReset.addEventListener("click", this.ResetEvent);
             this.Main();
         };
         Play.prototype.Update = function () {
+            this.checkInput();
+            this._lbljackpot.text = "Jackpot:" + this._jackpot;
+            this._lblmoney.text = "Money:" + this._playerMoney;
         };
         Play.prototype.Reset = function () {
-            this.resetFruitTally();
+            this.ResetFruitTally();
             this._playerMoney = 1000;
             this._winnings = 0;
             this._jackpot = 5000;

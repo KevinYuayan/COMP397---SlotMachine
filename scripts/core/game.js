@@ -36,6 +36,7 @@
     function Start() {
         console.log("%c Game Started...", "color: blue; font-size: 20px;");
         canvas = document.getElementsByTagName("canvas")[0];
+        managers.Game.playerBet = document.getElementsByTagName("input")[0];
         stage = new createjs.Stage(canvas);
         managers.Game.stage = stage;
         stage.enableMouseOver(20);
@@ -59,6 +60,8 @@
             currentScene.Destroy();
             stage.removeAllChildren();
         }
+        // hides the input field when changing scenes
+        managers.Game.playerBet.style.display = "none";
         switch (currentState) {
             case config.Scene.START:
                 currentScene = new scenes.Start;

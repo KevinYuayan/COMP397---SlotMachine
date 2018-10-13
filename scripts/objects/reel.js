@@ -26,7 +26,7 @@ var objects;
         // private methods
         // public methods
         Reel.prototype.Start = function () {
-            this.y = 200;
+            this.y = 180;
         };
         Reel.prototype.Update = function () {
         };

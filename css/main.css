@@ -1,3 +1,9 @@
 ﻿#canvas {
     border: 1px black dotted;
 }
+#playerBet {
+    position: absolute;
+    left: 280px;
+    top: 360px;
+    width: 100px;
+}

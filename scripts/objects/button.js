@@ -15,8 +15,6 @@ var objects;
 (function (objects) {
     var Button = /** @class */ (function (_super) {
         __extends(Button, _super);
-        // private instance variables
-        // public properties
         // constructor
         /**
          *Creates an instance of Button.
@@ -30,17 +28,47 @@ var objects;
             if (y === void 0) { y = 0; }
             if (isCentered === void 0) { isCentered = false; }
             var _this = _super.call(this, imageString) || this;
+            // private instance variables
+            _this._isEnabled = false;
             if (isCentered) {
                 _this.regX = _this.HalfWidth;
                 _this.regY = _this.HalfHeight;
             }
             _this.x = x;
             _this.y = y;
+            _this._out = _this._out.bind(_this);
+            _this._over = _this._over.bind(_this);
             // event listeners
-            _this.on("mouseover", _this._over);
-            _this.on("mouseout", _this._out);
+            _this.IsEnabled = true;
             return _this;
         }
+        Object.defineProperty(Button.prototype, "IsEnabled", {
+            // public properties
+            get: function () {
+                return this._isEnabled;
+            },
+            set: function (newValue) {
+                if (this._isEnabled != newValue) {
+                    this._isEnabled = newValue;
+                    if (newValue) {
+                        this.alpha = 1;
+                        //this.mouseoverFunc = this.on("mouseover", this._over)
+                        //this.mouseoutFunc = this.on("mouseout", this._out)
+                        this.addEventListener("mouseover", this._over);
+                        this.addEventListener("mouseout", this._out);
+                    }
+                    else {
+                        this.alpha = 0.3;
+                        //this.off("mouseover", this.mouseoverFunc);
+                        //this.off("mouseout", this.mouseoutFunc);
+                        this.off("mouseover", this._over);
+                        this.off("mouseout", this._out);
+                    }
+                }
+            },
+            enumerable: true,
+            configurable: true
+        });
         // private methods
         // event handlers
         Button.prototype._over = function (event) {
