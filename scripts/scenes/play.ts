@@ -46,11 +46,18 @@ module scenes {
 
         // Displays results on the reels
         private DisplayResults(): void {
+            this.RemoveOldResult();
             for (let index = 0; index < this._spinResult.length; index++) {
                 let result: string = this._spinResult[index];
                 this._reels[index] = new objects.Reel(result);
                 this._reels[index].x = this._reelObjXLocation[index];
                 this.stage.addChild(this._reels[index]);
+            }
+        }
+
+        private RemoveOldResult() {
+            for (let index = 0; index < this._reels.length; index++) {
+                this.removeChild(this._reels[index]);
             }
         }
 

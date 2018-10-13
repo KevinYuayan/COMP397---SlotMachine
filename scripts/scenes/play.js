@@ -25,11 +25,17 @@ var scenes;
         // private methods
         // Displays results on the reels
         Play.prototype.DisplayResults = function () {
+            this.RemoveOldResult();
             for (var index = 0; index < this._spinResult.length; index++) {
                 var result = this._spinResult[index];
                 this._reels[index] = new objects.Reel(result);
                 this._reels[index].x = this._reelObjXLocation[index];
                 this.stage.addChild(this._reels[index]);
+            }
+        };
+        Play.prototype.RemoveOldResult = function () {
+            for (var index = 0; index < this._reels.length; index++) {
+                this.removeChild(this._reels[index]);
             }
         };
         // Spins each reel to get the spin result

@@ -31,6 +31,7 @@
         {id: "grapes", src: imagePath + "grapes.png"},
         {id: "lemon", src: imagePath + "lemon.png"},
         {id: "orange", src: imagePath + "orange.png"},
+        {id: "seven", src: imagePath + "seven.png"},
         {id: "blank", src: imagePath + "blank.png"}
     ]
 
