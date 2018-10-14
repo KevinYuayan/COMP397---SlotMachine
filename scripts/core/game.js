@@ -10,10 +10,12 @@
     // Game objects
     // Path Variables
     var imagePath = "./assets/images/";
+    var soundPath = "./assets/sounds/";
     var assetManifest = [
         { id: "slotMachine", src: imagePath + "slotMachine.png" },
         { id: "startBackground", src: imagePath + "startBackground.jpg" },
         { id: "playBackground", src: imagePath + "playBackground.jpg" },
+        { id: "restartButton", src: imagePath + "button_restart.png" },
         { id: "quitButton", src: imagePath + "button_quit.png" },
         { id: "resetButton", src: imagePath + "button_reset.png" },
         { id: "spinButton", src: imagePath + "button_spin.png" },
@@ -24,8 +26,11 @@
         { id: "grapes", src: imagePath + "grapes.png" },
         { id: "lemon", src: imagePath + "lemon.png" },
         { id: "orange", src: imagePath + "orange.png" },
+        { id: "spin", src: imagePath + "spin.png" },
         { id: "seven", src: imagePath + "seven.png" },
-        { id: "blank", src: imagePath + "blank.png" }
+        { id: "blank", src: imagePath + "blank.png" },
+        { id: "dingSound", src: soundPath + "ding.wav" },
+        { id: "slipSound", src: soundPath + "slip.mp3" }
     ];
     function Init() {
         assetManager = new createjs.LoadQueue();

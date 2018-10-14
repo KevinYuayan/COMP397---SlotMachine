@@ -51,7 +51,7 @@ module scenes {
                 let result: string = this._spinResult[index];
                 this._reels[index] = new objects.Reel(result);
                 this._reels[index].x = this._reelObjXLocation[index];
-                this.stage.addChild(this._reels[index]);
+                this.addChild(this._reels[index]);
             }
         }
 
@@ -183,6 +183,7 @@ module scenes {
 
         /* Utility function to show a win message and increase player money */
         private showWinMessage() {
+            createjs.Sound.play("dingSound");
             this._playerMoney += this._winnings;
             //$("div#winOrLose>p").text("You Won: $" + winnings);
             this.ResetFruitTally();
@@ -191,6 +192,7 @@ module scenes {
 
         /* Utility function to show a loss message and reduce player money */
         private showLossMessage() {
+            createjs.Sound.play("slipSound");
             this._playerMoney -= this._playerBet;
             //$("div#winOrLose>p").text("You Lost!");
             this.ResetFruitTally();
@@ -229,6 +231,7 @@ module scenes {
             this.DisplayResults();
             this.DetermineWinnings();
             this._turn++;
+            console.log(this);
         }
         
         //Update Methods
@@ -286,14 +289,13 @@ module scenes {
         public Start(): void {
 
             managers.Game.playerBet.style.display = "inline";
-            this.Reset();
 
             this._playBackground = new objects.Background("playBackground");
             this._slotMachine = new objects.Background("slotMachine");
 
             this._lblbet = new objects.Label("Bet:", "30px", "Consolas", "#000000", 200, 340, false)
-            this._lbljackpot = new objects.Label("Jackpot:" + this._jackpot, "30px", "Consolas", "#000000", 200, 55, false)
-            this._lblmoney = new objects.Label("Money:" + this._playerMoney, "30px", "Consolas", "#000000", 200, 290, false)
+            this._lbljackpot = new objects.Label("Jackpot:", "30px", "Consolas", "#000000", 200, 55, false)
+            this._lblmoney = new objects.Label("Money:", "30px", "Consolas", "#000000", 200, 290, false)
 
             this._btnQuit = new objects.Button("quitButton", 530, 30, true);
             this._btnReset = new objects.Button("resetButton", 530, 80, true);
@@ -318,14 +320,17 @@ module scenes {
             this._btnReset.addEventListener("click", this.ResetEvent);
 
             this.Main();
+            this.Reset();
         }
 
         public Update(): void {
             this.checkInput();
-            this._lbljackpot.text = "Jackpot:" + this._jackpot;
-            this._lblmoney.text = "Money:" + this._playerMoney;
+            this._lbljackpot.text = "Jackpot: $" + this._jackpot;
+            this._lblmoney.text = "Money: $" + this._playerMoney;
         }
         public Reset(): void {
+            this._spinResult = ["spin", "spin", "spin"];
+            this.DisplayResults();
             this.ResetFruitTally();
             this._playerMoney = 1000;
             this._winnings = 0;

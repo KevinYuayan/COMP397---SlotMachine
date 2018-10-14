@@ -30,7 +30,7 @@ var scenes;
                 var result = this._spinResult[index];
                 this._reels[index] = new objects.Reel(result);
                 this._reels[index].x = this._reelObjXLocation[index];
-                this.stage.addChild(this._reels[index]);
+                this.addChild(this._reels[index]);
             }
         };
         Play.prototype.RemoveOldResult = function () {
@@ -155,6 +155,7 @@ var scenes;
         };
         /* Utility function to show a win message and increase player money */
         Play.prototype.showWinMessage = function () {
+            createjs.Sound.play("dingSound");
             this._playerMoney += this._winnings;
             //$("div#winOrLose>p").text("You Won: $" + winnings);
             this.ResetFruitTally();
@@ -162,6 +163,7 @@ var scenes;
         };
         /* Utility function to show a loss message and reduce player money */
         Play.prototype.showLossMessage = function () {
+            createjs.Sound.play("slipSound");
             this._playerMoney -= this._playerBet;
             //$("div#winOrLose>p").text("You Lost!");
             this.ResetFruitTally();
@@ -194,6 +196,7 @@ var scenes;
             this.DisplayResults();
             this.DetermineWinnings();
             this._turn++;
+            console.log(this);
         };
         //Update Methods
         // checks and updates the bet amount. Hides spin button if invalid bet
@@ -242,12 +245,11 @@ var scenes;
         // instatniates the objects
         Play.prototype.Start = function () {
             managers.Game.playerBet.style.display = "inline";
-            this.Reset();
             this._playBackground = new objects.Background("playBackground");
             this._slotMachine = new objects.Background("slotMachine");
             this._lblbet = new objects.Label("Bet:", "30px", "Consolas", "#000000", 200, 340, false);
-            this._lbljackpot = new objects.Label("Jackpot:" + this._jackpot, "30px", "Consolas", "#000000", 200, 55, false);
-            this._lblmoney = new objects.Label("Money:" + this._playerMoney, "30px", "Consolas", "#000000", 200, 290, false);
+            this._lbljackpot = new objects.Label("Jackpot:", "30px", "Consolas", "#000000", 200, 55, false);
+            this._lblmoney = new objects.Label("Money:", "30px", "Consolas", "#000000", 200, 290, false);
             this._btnQuit = new objects.Button("quitButton", 530, 30, true);
             this._btnReset = new objects.Button("resetButton", 530, 80, true);
             this._btnSpin = new objects.Button("spinButton", 530, 300, true);
@@ -266,13 +268,16 @@ var scenes;
             this._btnQuit.addEventListener("click", this.Quit);
             this._btnReset.addEventListener("click", this.ResetEvent);
             this.Main();
+            this.Reset();
         };
         Play.prototype.Update = function () {
             this.checkInput();
-            this._lbljackpot.text = "Jackpot:" + this._jackpot;
-            this._lblmoney.text = "Money:" + this._playerMoney;
+            this._lbljackpot.text = "Jackpot: $" + this._jackpot;
+            this._lblmoney.text = "Money: $" + this._playerMoney;
         };
         Play.prototype.Reset = function () {
+            this._spinResult = ["spin", "spin", "spin"];
+            this.DisplayResults();
             this.ResetFruitTally();
             this._playerMoney = 1000;
             this._winnings = 0;

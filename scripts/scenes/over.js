@@ -40,7 +40,7 @@ var scenes;
         Over.prototype.Start = function () {
             // Instantiates objects
             this._restartButton = new objects.Button("restartButton", 320, 360, true);
-            this._background = new objects.Background("GameOverBackground");
+            this._background = new objects.Background("playBackground");
             this._gameOverLabel = new objects.Label("Game Over", "60px", "Consolas", "#FFFF00", 320, 240, true);
             this.Main();
         };
