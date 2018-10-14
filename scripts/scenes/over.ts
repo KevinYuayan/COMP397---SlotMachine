@@ -1,4 +1,5 @@
 module scenes{
+    // Game over scene
     export class Over extends objects.Scene{
         // private instance variables
         
@@ -34,7 +35,7 @@ module scenes{
 
             // event listeners
 
-            // starts the play scene
+            // starts the play scene after restart is clicked
             this._restartButton.on("click", ()=>{
                 managers.Game.currentState = config.Scene.PLAY;
             })

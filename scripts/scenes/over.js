@@ -13,6 +13,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var scenes;
 (function (scenes) {
+    // Game over scene
     var Over = /** @class */ (function (_super) {
         __extends(Over, _super);
         // public properties
@@ -32,7 +33,7 @@ var scenes;
             // adds player to the stage
             this.addChild(this._gameOverLabel);
             // event listeners
-            // starts the play scene
+            // starts the play scene after restart is clicked
             this._restartButton.on("click", function () {
                 managers.Game.currentState = config.Scene.PLAY;
             });

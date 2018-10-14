@@ -1,4 +1,8 @@
 //IIFE - Immediately Invoked Function Expression
+/*
+    COMP397 - F2018 - SlotMachine Game
+    By: John Yuayan
+*/
 (function () {
     // game variables
     var canvas;
@@ -7,7 +11,6 @@
     // State Objects
     var currentScene;
     var currentState;
-    // Game objects
     // Path Variables
     var imagePath = "./assets/images/";
     var soundPath = "./assets/sounds/";
@@ -61,6 +64,7 @@
         stage.update();
         currentScene.Update();
     }
+    // This functions changes the state of the game
     function Main() {
         if (currentScene != null) {
             currentScene.Destroy();

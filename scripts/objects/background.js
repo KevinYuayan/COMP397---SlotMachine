@@ -13,6 +13,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var objects;
 (function (objects) {
+    // Background class used for the game background
     var Background = /** @class */ (function (_super) {
         __extends(Background, _super);
         // private instance variables

@@ -1,4 +1,5 @@
 module objects {
+    // Reel object to hold the different reel images
     export class Reel extends objects.GameObject {
 
         

@@ -1,4 +1,5 @@
 module objects {
+    // Label Class for creating text
     export class Label extends createjs.Text {
         // private instance variables
         private _width:number;

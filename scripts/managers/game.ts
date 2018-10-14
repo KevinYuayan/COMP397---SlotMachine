@@ -1,4 +1,5 @@
 module managers {
+    // game manager class that holds global variables
     export class Game {
         // Global
         public static assetManager:createjs.LoadQueue;

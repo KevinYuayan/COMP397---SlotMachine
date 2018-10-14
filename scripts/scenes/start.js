@@ -13,6 +13,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var scenes;
 (function (scenes) {
+    // Starting Screen
     var Start = /** @class */ (function (_super) {
         __extends(Start, _super);
         // public properties
@@ -30,7 +31,7 @@ var scenes;
             // adds play button to the stage
             this.addChild(this._playButton);
             // event listeners
-            // starts the play scene
+            // starts the play scene after playButton is clicked
             this._playButton.on("click", function () {
                 managers.Game.currentState = config.Scene.PLAY;
             });

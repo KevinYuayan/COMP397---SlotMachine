@@ -1,4 +1,5 @@
 module objects{
+    // Background class used for the game background
     export class Background extends objects.GameObject{
         
         // private instance variables

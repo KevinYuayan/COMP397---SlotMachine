@@ -13,6 +13,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var objects;
 (function (objects) {
+    // Label Class for creating text
     var Label = /** @class */ (function (_super) {
         __extends(Label, _super);
         // constructor

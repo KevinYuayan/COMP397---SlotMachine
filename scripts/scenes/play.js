@@ -24,6 +24,7 @@ var scenes;
             return _this;
         }
         // private methods
+        // Play Methods (spin)
         // Displays results on the reels
         Play.prototype.DisplayResults = function () {
             this.RemoveOldResult();
@@ -34,6 +35,7 @@ var scenes;
                 this.addChild(this._reels[index]);
             }
         };
+        // Removes the images from the previous spin
         Play.prototype.RemoveOldResult = function () {
             for (var index = 0; index < this._reels.length; index++) {
                 this.removeChild(this._reels[index]);
@@ -156,7 +158,6 @@ var scenes;
         Play.prototype.showWinMessage = function () {
             createjs.Sound.play("dingSound");
             this._playerMoney += this._winnings;
-            //$("div#winOrLose>p").text("You Won: $" + winnings);
             this.ResetFruitTally();
             this.checkJackPot();
         };
@@ -164,7 +165,6 @@ var scenes;
         Play.prototype.showLossMessage = function () {
             createjs.Sound.play("slipSound");
             this._playerMoney -= this._playerBet;
-            //$("div#winOrLose>p").text("You Lost!");
             this.ResetFruitTally();
         };
         /* Utility function to check if a value falls within a range of bounds */
@@ -175,10 +175,6 @@ var scenes;
             else {
                 return !value;
             }
-        };
-        // sets the x and y position for each object
-        Play.prototype.setXY = function () {
-            this._slotMachine.x = 150;
         };
         // event handlers
         Play.prototype.ResetEvent = function (event) {
@@ -203,7 +199,8 @@ var scenes;
                 this.Quit();
             }
         };
-        // checks and updates the bet amount. Hides spin button if invalid bet
+        // Checks and updates the bet amount
+        // Hides spin button if invalid bet
         Play.prototype.CheckInput = function () {
             if (!isNaN(Number(managers.Game.playerBet.value))) {
                 this._playerBet = parseInt(managers.Game.playerBet.value);
@@ -235,7 +232,7 @@ var scenes;
             this._sevens = 0;
             this._blanks = 0;
         };
-        // places the objects in the scene
+        // places the objects in the play scene
         Play.prototype.Main = function () {
             this.addChild(this._playBackground);
             this.addChild(this._slotMachine);
@@ -246,31 +243,36 @@ var scenes;
             this.addChild(this._btnReset);
             this.addChild(this._btnSpin);
         };
-        // instatniates the objects
+        // instatniates the Play scene
         Play.prototype.Start = function () {
             // resets the bet input field
             managers.Game.playerBet.value = "";
             managers.Game.playerBet.style.display = "inline";
+            // Background objs
             this._playBackground = new objects.Background("playBackground");
             this._slotMachine = new objects.Background("slotMachine");
+            // Label objs
             this._lblbet = new objects.Label("Bet:", "30px", "Consolas", "#000000", 200, 340, false);
             this._lbljackpot = new objects.Label("Jackpot:", "30px", "Consolas", "#000000", 200, 55, false);
             this._lblmoney = new objects.Label("Money:", "30px", "Consolas", "#000000", 200, 290, false);
+            // Button objs
             this._btnQuit = new objects.Button("quitButton", 530, 30, true);
             this._btnReset = new objects.Button("resetButton", 530, 80, true);
             this._btnSpin = new objects.Button("spinButton", 530, 300, true);
-            // individual reels are created after a spin
+            // Reel array. The individual reels are created after each spin
             this._reels = new Array();
             // instantiates the x coordinates for the reels
             this._reelObjXLocation = new Array();
             this._reelObjXLocation[0] = 210;
             this._reelObjXLocation[1] = 286;
             this._reelObjXLocation[2] = 362;
-            this.setXY();
-            // event handlers
+            // Places the slot machine in the center of the canvas
+            this._slotMachine.x = 150;
+            // Binding event handlers to the play scene
             this.Quit = this.Quit.bind(this);
             this.ResetEvent = this.ResetEvent.bind(this);
             this.Spin = this.Spin.bind(this);
+            // event listeners
             this._btnQuit.addEventListener("click", this.Quit);
             this._btnReset.addEventListener("click", this.ResetEvent);
             this.Main();

@@ -13,6 +13,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var objects;
 (function (objects) {
+    // Button class used for clickable buttons
     var Button = /** @class */ (function (_super) {
         __extends(Button, _super);
         // constructor
@@ -36,9 +37,9 @@ var objects;
             }
             _this.x = x;
             _this.y = y;
+            // Need to bind the event handlers to the Button instance for "this" to work properly
             _this._out = _this._out.bind(_this);
             _this._over = _this._over.bind(_this);
-            // event listeners
             _this.IsEnabled = true;
             return _this;
         }

@@ -13,6 +13,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var objects;
 (function (objects) {
+    // Game Object Abstract class used as a parent for all the game objects
     var GameObject = /** @class */ (function (_super) {
         __extends(GameObject, _super);
         // constructor

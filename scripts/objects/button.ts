@@ -1,4 +1,5 @@
 module objects {
+    // Button class used for clickable buttons
     export class Button extends GameObject {
 
         // private instance variables
@@ -51,9 +52,10 @@ module objects {
             this.x = x;
             this.y = y;
 
+            // Need to bind the event handlers to the Button instance for "this" to work properly
             this._out = this._out.bind(this);
             this._over = this._over.bind(this);
-            // event listeners
+
             this.IsEnabled = true;
         }
         // private methods

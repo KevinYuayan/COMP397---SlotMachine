@@ -1,5 +1,8 @@
 //IIFE - Immediately Invoked Function Expression
-
+/*  
+    COMP397 - F2018 - SlotMachine Game
+    By: John Yuayan
+*/
 (function(){
     // game variables
     let canvas:HTMLCanvasElement;
@@ -9,13 +12,11 @@
     // State Objects
     let currentScene:objects.Scene;
     let currentState:config.Scene;
-    
-    // Game objects
-
 
     // Path Variables
     let imagePath:string = "./assets/images/";
     let soundPath:string = "./assets/sounds/";
+
     let assetManifest = [
         {id: "slotMachine", src: imagePath + "slotMachine.png"},
         {id: "startBackground", src: imagePath + "startBackground.jpg"},
@@ -78,6 +79,7 @@
 
     }
 
+    // This functions changes the state of the game
     function Main():void {
         if(currentScene != null){
             currentScene.Destroy();

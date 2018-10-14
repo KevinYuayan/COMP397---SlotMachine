@@ -1,4 +1,5 @@
 module scenes{
+    // Starting Screen
     export class Start extends objects.Scene{
         // private instance variables
         
@@ -30,7 +31,7 @@ module scenes{
 
             // event listeners
 
-            // starts the play scene
+            // starts the play scene after playButton is clicked
             this._playButton.on("click", ()=>{
                 managers.Game.currentState = config.Scene.PLAY;
             })

@@ -1,5 +1,6 @@
 var managers;
 (function (managers) {
+    // game manager class that holds global variables
     var Game = /** @class */ (function () {
         function Game() {
         }

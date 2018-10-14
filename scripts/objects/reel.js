@@ -13,6 +13,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var objects;
 (function (objects) {
+    // Reel object to hold the different reel images
     var Reel = /** @class */ (function (_super) {
         __extends(Reel, _super);
         // private instance variables

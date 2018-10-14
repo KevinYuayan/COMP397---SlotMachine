@@ -13,6 +13,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var objects;
 (function (objects) {
+    // Abstract class for the different scenes
     var Scene = /** @class */ (function (_super) {
         __extends(Scene, _super);
         // Private instance variables

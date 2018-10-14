@@ -1,4 +1,5 @@
 module objects{
+    // Abstract class for the different scenes
     export abstract class Scene extends createjs.Container{
         // Private instance variables
 

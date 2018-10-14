@@ -1,4 +1,5 @@
 module objects {
+    // Game Object Abstract class used as a parent for all the game objects
     export abstract class GameObject extends createjs.Bitmap{
         // private instance variables
         private _width:number;
