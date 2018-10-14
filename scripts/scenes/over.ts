@@ -50,7 +50,6 @@ module scenes{
         public Update(): void {
         }
         public Reset(): void {
-            throw new Error("Method not implemented.");
         }
         public Destroy(): void {
             super.Destroy();

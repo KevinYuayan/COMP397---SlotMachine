@@ -11,6 +11,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+// Scene that contains the slotmachine game
 var scenes;
 (function (scenes) {
     var Play = /** @class */ (function (_super) {
@@ -134,11 +135,9 @@ var scenes;
                 else {
                     this._winnings = this._playerBet * 1;
                 }
-                this._winNumber++;
                 this.showWinMessage();
             }
             else {
-                this._lossNumber++;
                 this.showLossMessage();
             }
         };
@@ -186,6 +185,7 @@ var scenes;
             this.Reset();
         };
         Play.prototype.Quit = function (event) {
+            if (event === void 0) { event = null; }
             managers.Game.currentState = config.Scene.OVER;
             this.Destroy();
         };
@@ -195,13 +195,17 @@ var scenes;
             // method to display results on reel
             this.DisplayResults();
             this.DetermineWinnings();
-            this._turn++;
-            console.log(this);
         };
         //Update Methods
+        // Changes to over scene if money is 0 or below
+        Play.prototype.CheckMoney = function () {
+            if (this._playerMoney <= 0) {
+                this.Quit();
+            }
+        };
         // checks and updates the bet amount. Hides spin button if invalid bet
-        Play.prototype.checkInput = function () {
-            if (!isNaN(parseInt(managers.Game.playerBet.value))) {
+        Play.prototype.CheckInput = function () {
+            if (!isNaN(Number(managers.Game.playerBet.value))) {
                 this._playerBet = parseInt(managers.Game.playerBet.value);
                 if (this._playerBet <= this._playerMoney && this._playerBet > 0) {
                     if (!this._btnSpin.IsEnabled) {
@@ -244,6 +248,8 @@ var scenes;
         };
         // instatniates the objects
         Play.prototype.Start = function () {
+            // resets the bet input field
+            managers.Game.playerBet.value = "";
             managers.Game.playerBet.style.display = "inline";
             this._playBackground = new objects.Background("playBackground");
             this._slotMachine = new objects.Background("slotMachine");
@@ -271,9 +277,10 @@ var scenes;
             this.Reset();
         };
         Play.prototype.Update = function () {
-            this.checkInput();
+            this.CheckInput();
             this._lbljackpot.text = "Jackpot: $" + this._jackpot;
             this._lblmoney.text = "Money: $" + this._playerMoney;
+            this.CheckMoney();
         };
         Play.prototype.Reset = function () {
             this._spinResult = ["spin", "spin", "spin"];
@@ -282,11 +289,7 @@ var scenes;
             this._playerMoney = 1000;
             this._winnings = 0;
             this._jackpot = 5000;
-            this._turn = 0;
             this._playerBet = 0;
-            this._winNumber = 0;
-            this._lossNumber = 0;
-            this._winRatio = 0;
         };
         Play.prototype.Destroy = function () {
             _super.prototype.Destroy.call(this);

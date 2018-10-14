@@ -47,7 +47,6 @@ var scenes;
         Over.prototype.Update = function () {
         };
         Over.prototype.Reset = function () {
-            throw new Error("Method not implemented.");
         };
         Over.prototype.Destroy = function () {
             _super.prototype.Destroy.call(this);

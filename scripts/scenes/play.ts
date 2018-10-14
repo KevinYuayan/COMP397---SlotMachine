@@ -1,3 +1,4 @@
+// Scene that contains the slotmachine game
 module scenes {
     export class Play extends objects.Scene {
         // Private instance variables
@@ -17,11 +18,7 @@ module scenes {
         private _playerBet: number;
         private _winnings: number;
         private _jackpot: number;
-        private _turn: number;
-        private _winNumber: number;
-        private _lossNumber: number;
         private _spinResult: string[];
-        private _winRatio: number;
         private _grapes: number;
         private _bananas: number;
         private _oranges: number;
@@ -32,7 +29,6 @@ module scenes {
         private _blanks: number;
         // x value for the reel images
         private _reelObjXLocation: number[];
-
         private _reels: objects.Reel[];
 
         // public variables
@@ -159,11 +155,9 @@ module scenes {
                 else {
                     this._winnings = this._playerBet * 1;
                 }
-                this._winNumber++;
                 this.showWinMessage();
             }
             else {
-                this._lossNumber++;
                 this.showLossMessage();
             }
 
@@ -219,7 +213,7 @@ module scenes {
             this.Reset();
         }
         
-        private Quit(event: createjs.MouseEvent): void {
+        private Quit(event: createjs.MouseEvent = null): void {
             managers.Game.currentState = config.Scene.OVER;
             this.Destroy();
         }
@@ -230,15 +224,20 @@ module scenes {
             // method to display results on reel
             this.DisplayResults();
             this.DetermineWinnings();
-            this._turn++;
-            console.log(this);
         }
         
         //Update Methods
 
+        // Changes to over scene if money is 0 or below
+        private CheckMoney() {
+            if (this._playerMoney <= 0) {
+                this.Quit();
+            }
+        }
+
         // checks and updates the bet amount. Hides spin button if invalid bet
-        private checkInput(): void {
-            if (!isNaN(parseInt(managers.Game.playerBet.value))) {
+        private CheckInput(): void {
+            if (!isNaN(Number(managers.Game.playerBet.value))) {
                 this._playerBet = parseInt(managers.Game.playerBet.value);
                 if (this._playerBet <= this._playerMoney && this._playerBet > 0) {
                     if (!this._btnSpin.IsEnabled) {
@@ -287,7 +286,8 @@ module scenes {
 
         // instatniates the objects
         public Start(): void {
-
+            // resets the bet input field
+            managers.Game.playerBet.value = "";
             managers.Game.playerBet.style.display = "inline";
 
             this._playBackground = new objects.Background("playBackground");
@@ -324,10 +324,12 @@ module scenes {
         }
 
         public Update(): void {
-            this.checkInput();
+            this.CheckInput();
             this._lbljackpot.text = "Jackpot: $" + this._jackpot;
             this._lblmoney.text = "Money: $" + this._playerMoney;
+            this.CheckMoney();
         }
+
         public Reset(): void {
             this._spinResult = ["spin", "spin", "spin"];
             this.DisplayResults();
@@ -335,11 +337,7 @@ module scenes {
             this._playerMoney = 1000;
             this._winnings = 0;
             this._jackpot = 5000;
-            this._turn = 0;
             this._playerBet = 0;
-            this._winNumber = 0;
-            this._lossNumber = 0;
-            this._winRatio = 0;
         }
         public Destroy(): void {
             super.Destroy();
